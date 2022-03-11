@@ -3,6 +3,8 @@ package com.example.mareu.controller.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,11 +35,9 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
     @Override
     public void onBindViewHolder(@NonNull MeetingViewHolder holder, int position) {
         Meeting meeting = mMeetingList.get(position);
-        holder.date.setText(meeting.getDate());
-        holder.time.setText(meeting.getTime());
-        holder.location.setText(meeting.getLocation());
-        holder.subject.setText(meeting.getSubject());
-
+        String description = meeting.getSubject() + " - " + meeting.getTime() + " - " + meeting.getLocation();
+        holder.descriptionText.setText(description);
+        holder.participantText.setText(meeting.getParticipants());
     }
 
     @Override
@@ -47,14 +47,16 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
 
     public class MeetingViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView date, time, location, subject;
+        public TextView descriptionText, participantText;
+        public ImageView imageCircle;
+        public ImageButton imageButton;
 
         public MeetingViewHolder(View view){
             super(view);
-            date = view.findViewById(R.id.date);
-            time = view.findViewById(R.id.time);
-            location = view.findViewById(R.id.location);
-            subject = view.findViewById(R.id.subject);
+            descriptionText = view.findViewById(R.id.text_description);
+            participantText = view.findViewById(R.id.text_participant);
+            imageCircle = view.findViewById(R.id.image_circle);
+            imageButton = view.findViewById(R.id.delete_button);
         }
 
     }

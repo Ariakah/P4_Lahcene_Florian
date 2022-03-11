@@ -2,28 +2,37 @@ package com.example.mareu.ui;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.mareu.R;
 import com.example.mareu.model.Meeting;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 
-public class AddMeetingActivity extends AppCompatActivity implements Serializable {
+public class AddMeetingActivity extends AppCompatActivity implements Serializable, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-    EditText mDate, mTime, mLocation, mSubject, mParticipant;
-    TimePicker mTimePicker;
-    DatePicker mDatePicker;
+    EditText mDate, mTime, mSubject, mParticipant;
+    Spinner mLocation;
     Button mButton;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -32,25 +41,21 @@ public class AddMeetingActivity extends AppCompatActivity implements Serializabl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_meeting);
 
-        getIncomingIntent();
-
         mDate = findViewById(R.id.add_date);
         mTime = findViewById(R.id.add_time);
         mLocation = findViewById(R.id.add_location);
         mSubject = findViewById(R.id.add_subject);
         mParticipant = findViewById(R.id.add_participant);
-        mTimePicker = findViewById(R.id.time_picker);
-        mDatePicker = findViewById(R.id.date_picker);
         mButton = findViewById(R.id.button_meeting);
 
         mTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus){
-                    mTimePicker.setVisibility(View.GONE);
+                if (hasFocus){
+                    TimePickerFragment timePicker = new TimePickerFragment();
+                    timePicker.show(getSupportFragmentManager(),"tag");
                 }
                 else {
-                    mTimePicker.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -58,71 +63,53 @@ public class AddMeetingActivity extends AppCompatActivity implements Serializabl
         mDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus){
-                    mDatePicker.setVisibility(View.GONE);
+                if (hasFocus){
+                    DatePickerFragment datePicker = new DatePickerFragment();
+                    datePicker.show(getSupportFragmentManager(),"tag");
                 }
                 else {
-                    mDatePicker.setVisibility(View.VISIBLE);
                 }
             }
         });
 
-        mTimePicker.setIs24HourView(true);
-
-        mTimePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                mTime.setText(hourOfDay + "h" + minute);
-                addMeeting.setDate(mTime.getText().toString());
-            }
+        mButton.setOnClickListener(v -> {
+            addMeeting.setDate(mDate.getText().toString());
+            addMeeting.setTime(mTime.getText().toString());
+            addMeeting.setSubject(mSubject.getText().toString());
+            addMeeting.setParticipants(mParticipant.getText().toString());
+            this.finish();
         });
 
-        mDatePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
-            @Override
-            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                mDate.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
-                addMeeting.setDate(mDate.getText().toString());
-            }
-        });
-
-        mLocation.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                addMeeting.setLocation(mLocation.getText().toString());
-                return false;
-            }
-        });
-
-        mButton.setOnClickListener(v -> this.finish());
+        mLocation.setAdapter(ArrayAdapter.createFromResource(getApplicationContext(),
+                R.array.defaultValue, android.R.layout.simple_spinner_item));
     }
 
     private Meeting addMeeting = new Meeting();
 
     @Override
     public void finish() {
-
-        Log.d("tagii", "finish");
         Intent i = new Intent();
         i.putExtra("addMeeting", addMeeting);
         this.setResult(RESULT_OK, i);
         super.finish();
     }
 
-    private void getIncomingIntent() {
-
-        if (getIntent().hasExtra("meeting")) {
-            Meeting intentMeeting = (Meeting) getIntent().getSerializableExtra("meeting");;
-            displayData(intentMeeting);
-        }
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        // Create a Calendar instance
+        Calendar mCalendar = Calendar.getInstance();
+        // Set static variables of Calendar instance
+        mCalendar.set(Calendar.YEAR,year);
+        mCalendar.set(Calendar.MONTH,month);
+        mCalendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+        // Get the date in form of string
+        String selectedDate = DateFormat.getDateInstance(DateFormat.FULL).format(mCalendar.getTime());
+        // Set the textview to the selectedDate String
+        mDate.setText(selectedDate);
     }
 
-    private void displayData(Meeting meeting) {
-        mDate.setText(meeting.getDate());
-        mTime.setText(meeting.getTime());
-        mLocation.setText(meeting.getLocation());
-        mSubject.setText(meeting.getSubject());
-        mParticipant.setText(meeting.getParticipants());
+    @Override
+    public void onTimeSet(TimePicker view, int hour, int minute) {
+        mTime.setText(hour + "h"+minute);
     }
-
-
 }

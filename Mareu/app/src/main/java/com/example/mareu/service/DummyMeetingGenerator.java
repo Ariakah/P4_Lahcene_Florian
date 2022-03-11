@@ -10,7 +10,8 @@ public class DummyMeetingGenerator {
 
     public static List<Meeting> DUMMY_MEETING = Arrays.asList(
 
-            new Meeting("01/01/2022", "9h00", "Salle 01", "Urgent !", "4")
+            new Meeting("01/01/2022", "9h00", "Salle 01", "Urgent !", "date@msn.com "),
+            new Meeting("22/01/2022", "15h00", "Salle 02", "Test", "test2@test.com")
 
     );
 

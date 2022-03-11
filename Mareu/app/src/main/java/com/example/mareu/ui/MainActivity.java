@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         meetings = mApiService.getMeeting();
 
-        mRecyclerView = findViewById(R.id.recyclerViewMainActivity);
+        mRecyclerView = findViewById(R.id.rv_meeting);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerViewAdapter = new MeetingRecyclerViewAdapter(meetings);
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), AddMeetingActivity.class);
-                //i.putExtra("meeting",);
                 startActivityForResult(i, 0);
             }
         });
@@ -61,15 +60,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK){
             Meeting addMeeting = (Meeting) data.getSerializableExtra("addMeeting");
             meetings.add(addMeeting);
-            //mRecyclerViewAdapter.notifyDataSetChanged();
-            mRecyclerViewAdapter = new MeetingRecyclerViewAdapter(meetings);
-            mRecyclerView.setAdapter(mRecyclerViewAdapter);
-            Log.d("tagii", "on activity result");
-            Log.d("tagii", "meeting size" + meetings.size());
-
+            mRecyclerViewAdapter.notifyDataSetChanged();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

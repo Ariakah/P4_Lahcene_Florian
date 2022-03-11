@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="defaultValue">
+        <item>Room 01</item>
+        <item>Room 02</item>
+        <item>Room 03</item>
+        <item>Room 04</item>
+        <item>Room 05</item>
+        <item>Room 06</item>
+        <item>Room 07</item>
+        <item>Room 08</item>
+        <item>Room 09</item>
+        <item>Room 10</item>
+    </string-array>
+</resources>
