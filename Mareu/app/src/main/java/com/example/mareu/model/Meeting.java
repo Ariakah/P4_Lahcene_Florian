@@ -1,8 +1,11 @@
 package com.example.mareu.model;
 
+import android.graphics.Color;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 
 public class Meeting implements Serializable {
 
@@ -11,6 +14,7 @@ public class Meeting implements Serializable {
     String location;
     String subject;
     String participants;
+    int color;
 
     public Meeting() {
     }
@@ -21,6 +25,8 @@ public class Meeting implements Serializable {
         this.location = location;
         this.subject = subject;
         this.participants = participants;
+        this.color = Color.rgb(new Random().nextInt(255), new Random().nextInt(255), new Random().nextInt(255));
+
     }
 
     public String getDate() {
@@ -61,5 +67,13 @@ public class Meeting implements Serializable {
 
     public void setParticipants(String participants) {
         this.participants = participants;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 }

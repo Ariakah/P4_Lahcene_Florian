@@ -9,7 +9,7 @@
         android:id="@+id/image_circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/image_circle"
+        android:src="@drawable/image_circle_black"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -39,6 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/ic_baseline_delete_24"
+        android:onClick="delete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

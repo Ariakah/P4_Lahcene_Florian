@@ -8,6 +8,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -26,14 +28,17 @@ import com.example.mareu.model.Meeting;
 
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Random;
 
 public class AddMeetingActivity extends AppCompatActivity implements Serializable, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     EditText mDate, mTime, mSubject, mParticipant;
     Spinner mLocation;
     Button mButton;
+    ImageView mImageView;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -47,6 +52,8 @@ public class AddMeetingActivity extends AppCompatActivity implements Serializabl
         mSubject = findViewById(R.id.add_subject);
         mParticipant = findViewById(R.id.add_participant);
         mButton = findViewById(R.id.button_meeting);
+        mImageView = findViewById(R.id.image_circle);
+
 
         mTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -75,8 +82,10 @@ public class AddMeetingActivity extends AppCompatActivity implements Serializabl
         mButton.setOnClickListener(v -> {
             addMeeting.setDate(mDate.getText().toString());
             addMeeting.setTime(mTime.getText().toString());
+            addMeeting.setLocation(mLocation.getSelectedItem().toString());
             addMeeting.setSubject(mSubject.getText().toString());
             addMeeting.setParticipants(mParticipant.getText().toString());
+            addMeeting.setColor(Color.rgb(new Random().nextInt(255), new Random().nextInt(255), new Random().nextInt(255)));
             this.finish();
         });
 
@@ -103,7 +112,8 @@ public class AddMeetingActivity extends AppCompatActivity implements Serializabl
         mCalendar.set(Calendar.MONTH,month);
         mCalendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
         // Get the date in form of string
-        String selectedDate = DateFormat.getDateInstance(DateFormat.FULL).format(mCalendar.getTime());
+        //String selectedDate = DateFormat.getDateInstance(DateFormat.FULL).format(mCalendar.getTime());
+        String selectedDate = new SimpleDateFormat("dd/MM/yyyy").format(mCalendar.getTime());
         // Set the textview to the selectedDate String
         mDate.setText(selectedDate);
     }

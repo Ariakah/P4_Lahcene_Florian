@@ -3,11 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../../layout/custom_preview.xml" value="0.2641025641025641" />
+        <entry key="app/src/main/res/drawable/ic_baseline_filter_list_24.xml" value="0.154" />
         <entry key="app/src/main/res/drawable/image_circle.xml" value="0.154" />
+        <entry key="app/src/main/res/drawable/image_circle_black.xml" value="0.121" />
         <entry key="app/src/main/res/layout/activity_add_meeting.xml" value="0.22082570393880208" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/array.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/meeting_item.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/menu/menu.xml" value="0.24166666666666667" />
       </map>
     </option>
   </component>

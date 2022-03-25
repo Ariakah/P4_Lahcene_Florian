@@ -1,19 +1,23 @@
 package com.example.mareu.controller.adapters;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mareu.R;
 import com.example.mareu.model.Meeting;
 
 import java.util.List;
+import java.util.Random;
 
 public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecyclerViewAdapter.MeetingViewHolder> {
 
@@ -38,7 +42,9 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
         String description = meeting.getSubject() + " - " + meeting.getTime() + " - " + meeting.getLocation();
         holder.descriptionText.setText(description);
         holder.participantText.setText(meeting.getParticipants());
-    }
+        holder.imageButton.setTag(position);
+        holder.imageCircle.setColorFilter(meeting.getColor(), android.graphics.PorterDuff.Mode.SRC_IN);
+        }
 
     @Override
     public int getItemCount() {
