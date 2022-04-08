@@ -1,6 +1,7 @@
 package com.example.mareu.controller.adapters;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,10 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mareu.R;
+import com.example.mareu.di.DI;
 import com.example.mareu.model.Meeting;
+import com.example.mareu.service.ApiService;
+import com.example.mareu.service.DummyMeetingApiService;
 
 import java.util.List;
 import java.util.Random;
@@ -22,6 +26,8 @@ import java.util.Random;
 public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecyclerViewAdapter.MeetingViewHolder> {
 
     private List<Meeting> mMeetingList;
+
+    ApiService mApiService = DI.getApiService();
 
     public MeetingRecyclerViewAdapter(List<Meeting> items){
         mMeetingList = items;
@@ -63,6 +69,14 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
             participantText = view.findViewById(R.id.text_participant);
             imageCircle = view.findViewById(R.id.image_circle);
             imageButton = view.findViewById(R.id.delete_button);
+            imageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    mApiService.deleteMeeting(mMeetingList.get(position));
+                    notifyDataSetChanged();
+                }
+            });
         }
 
     }

@@ -38,15 +38,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
     private ApiService mApiService;
-    private FloatingActionButton mAdd;
     private List<Meeting> meetings = new ArrayList<>();
     private MeetingRecyclerViewAdapter mRecyclerViewAdapter;
 
     private RecyclerView mRecyclerView;
-
-    private List<Meeting> filtreMeeting = new ArrayList<>();
-
-    private String selectedDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +53,12 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         meetings = mApiService.getMeeting();
 
         mRecyclerView = findViewById(R.id.rv_meeting);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerViewAdapter = new MeetingRecyclerViewAdapter(meetings);
-        mRecyclerView.setAdapter(mRecyclerViewAdapter);
 
-        mAdd = findViewById(R.id.add_meeting);
+        FloatingActionButton add = findViewById(R.id.add_meeting);
 
-        mAdd.setOnClickListener(new View.OnClickListener() {
+        initList(meetings);
+
+        add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), AddMeetingActivity.class);
@@ -84,10 +78,10 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void delete (View view) {
-        int position = (int) view.getTag();
-        meetings.remove(position);
-        mRecyclerViewAdapter.notifyDataSetChanged();
+    private void initList(List<Meeting> meetingList) {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerViewAdapter = new MeetingRecyclerViewAdapter(meetingList);
+        mRecyclerView.setAdapter(mRecyclerViewAdapter);
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
@@ -116,19 +110,15 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
                     dialog.dismiss();
                     String selectedRoom = types[which];
-                    filtreMeeting = new ArrayList<Meeting>();
-                    for (int i = 0; i < meetings.size(); i++){
-                        if (meetings.get(i).getLocation().equals(selectedRoom))
-                            filtreMeeting.add(meetings.get(i));
-                    }
-                    mRecyclerView.setAdapter(new MeetingRecyclerViewAdapter(filtreMeeting));
+                    List<Meeting> filterMeeting = mApiService.sortMeetingByRoom(selectedRoom);
+                    initList(filterMeeting);
                 }
 
             });
             b.show();
         }
         if (menuItem.getItemId() == R.id.menu_all) {
-            mRecyclerView.setAdapter(mRecyclerViewAdapter);
+            initList(meetings);
         }
         return true;
     }
@@ -142,17 +132,9 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         mCalendar.set(Calendar.MONTH,month);
         mCalendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
         // Get the date in form of string
-        //String selectedDate = DateFormat.getDateInstance(DateFormat.FULL).format(mCalendar.getTime());
-        selectedDate = new SimpleDateFormat("dd/MM/yyyy").format(mCalendar.getTime());
+        String selectedDate = new SimpleDateFormat("dd/MM/yyyy").format(mCalendar.getTime());
+        List<Meeting> filterMeeting = mApiService.sortMeetingByDate(selectedDate);
         // Set the textview to the selectedDate String
-        filtreMeeting = new ArrayList<Meeting>();
-        for (int i = 0; i < meetings.size(); i++){
-            if (meetings.get(i).getDate().equals(selectedDate))
-                filtreMeeting.add(meetings.get(i));
-        }
-        mRecyclerView.setAdapter(new MeetingRecyclerViewAdapter(filtreMeeting));
-        }
-
-    public void onTimeSet(TimePicker view, int hour, int minute) {
+        initList(filterMeeting);
     }
 }

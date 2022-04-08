@@ -11,4 +11,8 @@ public interface ApiService {
     void deleteMeeting(Meeting meeting);
 
     void createMeeting (Meeting meeting);
+
+    List<Meeting> sortMeetingByDate (String date);
+
+    List<Meeting> sortMeetingByRoom (String room);
 }

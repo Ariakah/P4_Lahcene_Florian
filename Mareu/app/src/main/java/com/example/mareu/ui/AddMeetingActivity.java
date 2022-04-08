@@ -72,6 +72,7 @@ public class AddMeetingActivity extends AppCompatActivity implements Serializabl
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus){
                     DatePickerFragment datePicker = new DatePickerFragment();
+                    datePicker.setContext(AddMeetingActivity.this);
                     datePicker.show(getSupportFragmentManager(),"tag");
                 }
                 else {

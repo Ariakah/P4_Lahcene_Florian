@@ -14,7 +14,7 @@ public class Meeting implements Serializable {
     String location;
     String subject;
     String participants;
-    int color;
+    private int color;
 
     public Meeting() {
     }
@@ -75,5 +75,13 @@ public class Meeting implements Serializable {
 
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public boolean equals(Object o) {
+        if (!(o instanceof Meeting))
+            return false;
+        Meeting meeting = (Meeting) o;
+        return ((this.date.equals(meeting.date)) && this.time.equals(meeting.time) &&
+                this.location.equals(meeting.location) && this.subject.equals(meeting.subject));
     }
 }
