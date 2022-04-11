@@ -121,6 +121,6 @@ public class AddMeetingActivity extends AppCompatActivity implements Serializabl
 
     @Override
     public void onTimeSet(TimePicker view, int hour, int minute) {
-        mTime.setText(hour + "h"+minute);
+        mTime.setText(hour + "h" +minute);
     }
 }
